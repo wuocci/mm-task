@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+.env*.local
+
+# Azure Functions
+local.settings.json
+.azurite/
+__azurite_db*
+__blobstorage__/
+__queuestorage__/
+
+.DS_Store
