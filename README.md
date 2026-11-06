@@ -35,10 +35,10 @@ or install latest v24:
 
 to install Azure Functions, run
 
-  ```sh
-  brew tap azure/functions
-  brew install azure-functions-core-tools@4
-  ```
+```sh
+brew tap azure/functions
+brew install azure-functions-core-tools@4
+```
 
 ### Install and run
 
