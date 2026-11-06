@@ -25,6 +25,8 @@ export function requireApiKey(
 
   const provided = request.headers.get(API_KEY_HEADER);
   if (provided === null || !timingSafeEqual(digest(provided), digest(expected))) {
+    // Never log the provided value: a near-miss could reveal the real key.
+    context.warn(`Rejected request: ${provided === null ? 'missing' : 'invalid'} API key.`);
     return errorResponse(401, 'UNAUTHORIZED', 'Missing or invalid API key.');
   }
   return undefined;
