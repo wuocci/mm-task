@@ -45,11 +45,17 @@ brew install azure-functions-core-tools@4
 ```sh
 npm install
 cp apps/api/local.settings.example.json apps/api/local.settings.json
-
-npm run dev:api   # Functions host on http://localhost:7071
-npm run dev:web   # Vite dev server on http://localhost:5173
+cp apps/web/.env.example apps/web/.env.local
 ```
 
-In development, Vite proxies `/api/*` to the Functions host, so the web app uses relative URLs and needs no CORS setup.
+Set the same `API_KEY` value in both copied files, for example one generated with `openssl rand -hex 32`.
+
+```sh
+npm run dev   # starts both: Functions host on http://localhost:7071, Vite on http://localhost:5173
+```
+
+`npm run dev` runs the API and the web app together with labelled output, and stops both if either exits. To run one on its own, use `npm run dev:api` or `npm run dev:web`.
+
+In development, Vite proxies `/api/*` to the Functions host and adds the API key to each request, so the web app uses relative URLs, needs no CORS setup and never sees the key.
 
 To check that the API is running: `curl http://localhost:7071/api/health`
