@@ -1,8 +1,11 @@
 import { ProductPage } from './features/product/ProductPage';
+import { useProductId } from './routing';
 
-export function App({ productId }: { productId: string }) {
+export function App() {
+  const productId = useProductId();
+
   return (
-    <main>
+    <main className="mx-auto max-w-content">
       <ProductPage productId={productId} />
     </main>
   );

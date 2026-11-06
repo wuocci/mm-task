@@ -1,18 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
 import type { ApiError } from '../../api/client';
 import { productQuery } from '../../api/products';
+import { Button } from '../../components/Button';
+import { ProductSkeleton } from './ProductSkeleton';
+import { ProductView } from './ProductView';
 
 export function ProductPage({ productId }: { productId: string }) {
   const { data: product, error, isError, isFetching, refetch } = useQuery(productQuery(productId));
 
   // Checked first: keeps showing cached data if a background refetch fails.
   if (product) {
-    return <h1>{product.name}</h1>;
+    return <ProductView product={product} />;
   }
   if (isError) {
     return <ProductError error={error} retrying={isFetching} onRetry={() => void refetch()} />;
   }
-  return <p role="status">Loading product…</p>;
+  return <ProductSkeleton />;
 }
 
 interface ProductErrorProps {
@@ -24,20 +27,20 @@ interface ProductErrorProps {
 function ProductError({ error, retrying, onRetry }: ProductErrorProps) {
   if (error.code === 'NOT_FOUND' || error.code === 'BAD_REQUEST') {
     return (
-      <section>
-        <h1>Product not found</h1>
+      <section className="grid justify-items-start gap-4 px-4 py-8">
+        <h1 className="text-lg font-medium tracking-caps uppercase">Product not found</h1>
         <p>This product doesn’t exist or is no longer available.</p>
       </section>
     );
   }
 
   return (
-    <section>
-      <h1>Something went wrong</h1>
+    <section className="grid justify-items-start gap-4 px-4 py-8">
+      <h1 className="text-lg font-medium tracking-caps uppercase">Something went wrong</h1>
       <p>We couldn’t load this product. Please try again.</p>
-      <button type="button" onClick={onRetry} disabled={retrying}>
+      <Button variant="secondary" onClick={onRetry} disabled={retrying}>
         {retrying ? 'Retrying…' : 'Try again'}
-      </button>
+      </Button>
     </section>
   );
 }
