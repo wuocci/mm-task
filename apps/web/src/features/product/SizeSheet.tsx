@@ -1,12 +1,13 @@
-import type { Size } from '@mm/shared';
+import type { Size, SubscriptionResponse } from '@mm/shared';
 import { type MouseEvent, useEffect, useId, useRef, useState } from 'react';
 import { NotifyForm } from './NotifyForm';
 
 interface SizeSheetProps {
   open: boolean;
+  sku: string;
   sizes: readonly Size[];
   onAdd: (size: Size) => void;
-  onNotify: (size: Size, email: string) => void;
+  onSubscribed: (size: Size, status: SubscriptionResponse['status']) => void;
   onClose: () => void;
 }
 
@@ -14,7 +15,7 @@ interface SizeSheetProps {
  * Slide-up size list built on a native modal `<dialog>`: the browser handles focus trapping,
  * Esc to close and the backdrop. Picking a sold-out size swaps the list for a notify form.
  */
-export function SizeSheet({ open, sizes, onAdd, onNotify, onClose }: SizeSheetProps) {
+export function SizeSheet({ open, sku, sizes, onAdd, onSubscribed, onClose }: SizeSheetProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
   const titleId = useId();
@@ -55,8 +56,8 @@ export function SizeSheet({ open, sizes, onAdd, onNotify, onClose }: SizeSheetPr
     setNotifySize(undefined);
   }
 
-  function handleNotify(email: string) {
-    if (notifySize) onNotify(notifySize, email);
+  function handleSubscribed(status: SubscriptionResponse['status']) {
+    if (notifySize) onSubscribed(notifySize, status);
   }
 
   // The sheet's content fills the dialog, so a click on the dialog itself is a click on the backdrop.
@@ -91,7 +92,12 @@ export function SizeSheet({ open, sizes, onAdd, onNotify, onClose }: SizeSheetPr
         </div>
 
         {notifySize ? (
-          <NotifyForm onSubmit={handleNotify} onBack={handleBack} />
+          <NotifyForm
+            sku={sku}
+            size={notifySize}
+            onSubscribed={handleSubscribed}
+            onBack={handleBack}
+          />
         ) : (
           <ul ref={listRef}>
             {sizes.map((size) => (

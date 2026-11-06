@@ -37,11 +37,21 @@ function isApiErrorBody(value: unknown): value is ApiErrorBody {
   );
 }
 
+/** GETs JSON from the API. */
+export function apiGet<T>(path: string): Promise<T> {
+  return apiRequest<T>('GET', path);
+}
+
+/** POSTs a JSON body to the API and returns the JSON response. */
+export function apiPost<T>(path: string, body: unknown): Promise<T> {
+  return apiRequest<T>('POST', path, body);
+}
+
 /**
- * GETs JSON from the API with the API key attached. Every failure becomes an `ApiError`.
+ * Calls the API with the API key attached. Every failure becomes an `ApiError`.
  * Env is read per call, not at module load, so it reflects the running server's configuration.
  */
-export async function apiGet<T>(path: string): Promise<T> {
+async function apiRequest<T>(method: 'GET' | 'POST', path: string, payload?: unknown): Promise<T> {
   const apiKey = process.env.API_KEY;
   if (!apiKey) {
     throw new ApiError(0, 'INTERNAL', 'API_KEY is not set in apps/web/.env.local.');
@@ -53,7 +63,13 @@ export async function apiGet<T>(path: string): Promise<T> {
   let body: unknown;
   try {
     response = await fetch(new URL(path, baseUrl), {
-      headers: { Accept: 'application/json', [API_KEY_HEADER]: apiKey },
+      method,
+      headers: {
+        Accept: 'application/json',
+        [API_KEY_HEADER]: apiKey,
+        ...(payload === undefined ? {} : { 'Content-Type': 'application/json' }),
+      },
+      body: payload === undefined ? null : JSON.stringify(payload),
       signal: timeout,
     });
     body = await response.json().catch(() => undefined);

@@ -7,6 +7,7 @@ import { PurchaseBar } from './PurchaseBar';
 
 export function ProductView({ product }: { product: Product }) {
   const [mainImage] = product.images;
+  const allSoldOut = product.sizes.every((size) => !size.inStock);
 
   return (
     <article>
@@ -26,6 +27,7 @@ export function ProductView({ product }: { product: Product }) {
           </h1>
           <p className="caps text-muted">{product.category}</p>
           <PriceTag price={product.price} compareAtPrice={product.compareAtPrice} />
+          {allSoldOut && <p className="caps text-notice">All sizes sold out online</p>}
         </header>
 
         <ColorSelector colorways={product.colorways ?? []} colorName={product.colorName} />
@@ -39,7 +41,7 @@ export function ProductView({ product }: { product: Product }) {
         <ProductDetails pattern={product.pattern} details={product.details} />
       </div>
 
-      <PurchaseBar key={product.id} sizes={product.sizes} price={product.price} />
+      <PurchaseBar key={product.id} sku={product.id} sizes={product.sizes} price={product.price} />
     </article>
   );
 }

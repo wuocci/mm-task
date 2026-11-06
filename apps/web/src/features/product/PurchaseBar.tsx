@@ -1,20 +1,21 @@
-import type { Money, Size } from '@mm/shared';
+import type { Money, Size, SubscriptionResponse } from '@mm/shared';
 import { useRef, useState } from 'react';
 import { Button } from '../../components/Button';
 import { formatPrice } from '../../lib/format';
 import { SizeSheet } from './SizeSheet';
 
 interface PurchaseBarProps {
+  sku: string;
   sizes: readonly Size[];
   price: Money;
 }
 
 /**
  * Sticky bar with a "Select size" button and the price that opens the size sheet.
- * Picking a size adds it to the bag; a sold-out size leads to a back-in-stock request.
- * There's no cart or notification service, so both only show a confirmation.
+ * Picking a size adds it to the bag; a sold-out size leads to a back-in-stock subscription.
+ * There's no cart, so adding to the bag only shows a confirmation.
  */
-export function PurchaseBar({ sizes, price }: PurchaseBarProps) {
+export function PurchaseBar({ sku, sizes, price }: PurchaseBarProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [confirmation, setConfirmation] = useState('');
@@ -35,10 +36,13 @@ export function PurchaseBar({ sizes, price }: PurchaseBarProps) {
     setConfirmation(`Added · size ${size.label}`);
   }
 
-  // The email isn't sent or stored anywhere: there's no notification service behind this demo.
-  function handleNotify(size: Size, _email: string) {
+  function handleSubscribed(size: Size, status: SubscriptionResponse['status']) {
     closeSheet();
-    setConfirmation(`We’ll email you when size ${size.label} is back in stock`);
+    setConfirmation(
+      status === 'subscribed'
+        ? `We’ll email you when size ${size.label} is back in stock`
+        : `You’re already subscribed to size ${size.label}`,
+    );
   }
 
   return (
@@ -55,9 +59,10 @@ export function PurchaseBar({ sizes, price }: PurchaseBarProps) {
       </div>
       <SizeSheet
         open={sheetOpen}
+        sku={sku}
         sizes={sizes}
         onAdd={handleAdd}
-        onNotify={handleNotify}
+        onSubscribed={handleSubscribed}
         onClose={closeSheet}
       />
     </div>
