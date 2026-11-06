@@ -56,6 +56,6 @@ npm run dev   # starts both: Functions host on http://localhost:7071, Vite on ht
 
 `npm run dev` runs the API and the web app together with labelled output, and stops both if either exits. To run one on its own, use `npm run dev:api` or `npm run dev:web`.
 
-In development, Vite proxies `/api/*` to the Functions host and adds the API key to each request, so the web app uses relative URLs, needs no CORS setup and never sees the key.
+The web app is server-rendered with TanStack Start. Its server fetches the product from the Functions API with the API key and sends ready HTML, together with the data, to the browser. Later requests from the browser, such as switching colour, go to the web app's own server, never straight to the API, so the key stays on the server and no CORS setup is needed.
 
 To check that the API is running: `curl http://localhost:7071/api/health`

@@ -1,23 +1,10 @@
 import tailwindcss from '@tailwindcss/vite';
+import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import react from '@vitejs/plugin-react';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
 
-export default defineConfig(({ mode }) => {
-  // Empty prefix loads unprefixed variables. API_KEY stays here on the server; only VITE_* reaches the bundle.
-  const { API_KEY } = loadEnv(mode, process.cwd(), '');
-  if (!API_KEY) {
-    console.warn('API_KEY is not set in apps/web/.env.local; API requests will get 401.');
-  }
-
-  return {
-    plugins: [react(), tailwindcss()],
-    server: {
-      proxy: {
-        '/api': {
-          target: 'http://localhost:7071',
-          headers: API_KEY ? { 'x-api-key': API_KEY } : {},
-        },
-      },
-    },
-  };
+// Server rendering with TanStack Start. The API key is read by the server at request time
+// (see src/api/upstream.server.ts), so no dev proxy is needed.
+export default defineConfig({
+  plugins: [tailwindcss(), tanstackStart(), react()],
 });

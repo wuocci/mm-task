@@ -1,6 +1,12 @@
+/**
+ * Server-only HTTP client for the Azure Functions API. The `.server.ts` suffix makes Start refuse
+ * to bundle this file for the browser, so the API key and the API's address never reach the client.
+ */
 import type { ApiErrorBody, ApiErrorCode } from '@mm/shared';
 
 const REQUEST_TIMEOUT_MS = 10_000;
+const DEFAULT_API_URL = 'http://localhost:7071';
+const API_KEY_HEADER = 'x-api-key';
 
 /** API error codes plus failures that happen before a response arrives. */
 export type ClientErrorCode = ApiErrorCode | 'NETWORK' | 'TIMEOUT' | 'UNKNOWN';
@@ -18,11 +24,6 @@ export class ApiError extends Error {
   }
 }
 
-/** Whether trying again could succeed: transport failures and server errors, not client errors. */
-export function isRetryable(error: ApiError): boolean {
-  return error.code === 'NETWORK' || error.code === 'TIMEOUT' || error.status >= 500;
-}
-
 function isApiErrorBody(value: unknown): value is ApiErrorBody {
   if (typeof value !== 'object' || value === null || !('error' in value)) return false;
   const { error } = value;
@@ -37,24 +38,28 @@ function isApiErrorBody(value: unknown): value is ApiErrorBody {
 }
 
 /**
- * GETs JSON from the API. Every failure becomes an `ApiError`, except cancellation by the
- * caller's `signal`, which rethrows the original error so TanStack Query can recognise it.
+ * GETs JSON from the API with the API key attached. Every failure becomes an `ApiError`.
+ * Env is read per call, not at module load, so it reflects the running server's configuration.
  */
-export async function getJson<T>(path: string, signal?: AbortSignal): Promise<T> {
+export async function apiGet<T>(path: string): Promise<T> {
+  const apiKey = process.env.API_KEY;
+  if (!apiKey) {
+    throw new ApiError(0, 'INTERNAL', 'API_KEY is not set in apps/web/.env.local.');
+  }
+  const baseUrl = process.env.API_URL ?? DEFAULT_API_URL;
   const timeout = AbortSignal.timeout(REQUEST_TIMEOUT_MS);
 
   let response: Response;
   let body: unknown;
   try {
-    response = await fetch(path, {
-      headers: { Accept: 'application/json' },
-      signal: signal ? AbortSignal.any([signal, timeout]) : timeout,
+    response = await fetch(new URL(path, baseUrl), {
+      headers: { Accept: 'application/json', [API_KEY_HEADER]: apiKey },
+      signal: timeout,
     });
     body = await response.json().catch(() => undefined);
-  } catch (error) {
-    if (signal?.aborted) throw error;
+  } catch {
     if (timeout.aborted) throw new ApiError(0, 'TIMEOUT', 'The request timed out.');
-    throw new ApiError(0, 'NETWORK', 'Could not reach the server.');
+    throw new ApiError(0, 'NETWORK', `Could not reach the API at ${baseUrl}.`);
   }
 
   if (!response.ok) {

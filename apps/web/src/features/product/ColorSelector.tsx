@@ -1,10 +1,8 @@
 import type { Colorway } from '@mm/shared';
-import type { MouseEvent } from 'react';
-import { navigate, productPath } from '../../routing';
+import { Link } from '@tanstack/react-router';
 
 interface ColorSelectorProps {
   colorways: readonly Colorway[];
-  currentId: string;
   colorName: string;
 }
 
@@ -16,18 +14,11 @@ function swatchBackground(colors: readonly string[]): string {
 }
 
 /**
- * Colour swatches. Each colourway is its own product page, so swatches are real links:
- * they work without JavaScript and can be opened in a new tab, but switch in place on a plain click.
+ * Colour swatches. Each colourway is its own product page, so swatches are real links: they work
+ * before JavaScript loads and can open in a new tab. The router preloads a colour on hover or touch
+ * and switches in place; the link to the current page gets `aria-current="page"` automatically.
  */
-export function ColorSelector({ colorways, currentId, colorName }: ColorSelectorProps) {
-  function handleClick(event: MouseEvent<HTMLAnchorElement>, productId: string) {
-    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
-      return;
-    }
-    event.preventDefault();
-    if (productId !== currentId) navigate(productPath(productId));
-  }
-
+export function ColorSelector({ colorways, colorName }: ColorSelectorProps) {
   return (
     <div className="grid gap-2">
       <p className="caps">
@@ -35,22 +26,20 @@ export function ColorSelector({ colorways, currentId, colorName }: ColorSelector
       </p>
       {colorways.length > 1 && (
         <ul className="flex gap-3" aria-label="Colours">
-          {colorways.map((colorway) => {
-            const current = colorway.productId === currentId;
-            return (
-              <li key={colorway.productId}>
-                <a
-                  href={productPath(colorway.productId)}
-                  onClick={(event) => handleClick(event, colorway.productId)}
-                  aria-current={current ? 'page' : undefined}
-                  className="block size-7 border border-divider ring-offset-2 ring-offset-bg aria-[current=page]:ring-1 aria-[current=page]:ring-fg"
-                  style={{ background: swatchBackground(colorway.swatch) }}
-                >
-                  <span className="sr-only">{colorway.colorName}</span>
-                </a>
-              </li>
-            );
-          })}
+          {colorways.map((colorway) => (
+            <li key={colorway.productId}>
+              <Link
+                to="/products/$productId"
+                params={{ productId: colorway.productId }}
+                // Switching colour shouldn't jump back to the top of the page.
+                resetScroll={false}
+                className="block size-7 border border-divider ring-offset-2 ring-offset-bg aria-[current=page]:ring-1 aria-[current=page]:ring-fg"
+                style={{ background: swatchBackground(colorway.swatch) }}
+              >
+                <span className="sr-only">{colorway.colorName}</span>
+              </Link>
+            </li>
+          ))}
         </ul>
       )}
     </div>
