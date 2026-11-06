@@ -19,6 +19,15 @@ const size = z.strictObject({
   inStock: z.boolean(),
 });
 
+const colorway = z.strictObject({
+  productId: z.string().min(1),
+  colorName: z.string().min(1),
+  swatch: z
+    .array(z.string().regex(/^#[0-9a-f]{6}$/i, 'Expected a hex colour like #a1b2c3'))
+    .min(1)
+    .max(3),
+});
+
 /** Runtime check for product data. Typed against `Product`, so it cannot drift from the contract. */
 export const productSchema: z.ZodType<Product> = z.strictObject({
   id: z.string().min(1),
@@ -26,6 +35,7 @@ export const productSchema: z.ZodType<Product> = z.strictObject({
   category: z.string().min(1),
   badges: z.array(z.string()),
   colorName: z.string().min(1),
+  colorways: z.array(colorway).exactOptional(),
   price: money,
   compareAtPrice: money.exactOptional(),
   description: z.array(z.string()),
@@ -37,3 +47,5 @@ export const productSchema: z.ZodType<Product> = z.strictObject({
     fit: z.string().exactOptional(),
   }),
 });
+
+export const catalogSchema = z.array(productSchema);

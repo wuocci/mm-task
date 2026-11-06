@@ -1,0 +1,164 @@
+[
+  {
+    "id": "097382-190",
+    "name": "Griste Vihkiruusu",
+    "category": "Shirt",
+    "badges": [
+      "Outlet"
+    ],
+    "colorName": "black, light pink, off-white",
+    "colorways": [
+      {
+        "productId": "097382-190",
+        "colorName": "black, light pink, off-white",
+        "swatch": [
+          "#1a1a1a",
+          "#efc4c9",
+          "#f4f1ea"
+        ]
+      },
+      {
+        "productId": "097382-159",
+        "colorName": "black, light blue, off-white",
+        "swatch": [
+          "#1a1a1a",
+          "#a8cfe6",
+          "#f4f1ea"
+        ]
+      }
+    ],
+    "price": {
+      "amount": 14900,
+      "currency": "EUR"
+    },
+    "description": [
+      "The Griste Vihkiruusu cotton shirt is made of organic cotton and features the Vihkiruusu pattern. The straight-cut shirt has a relaxed fit and curved slits at the side seams.",
+      "We cut the shirts from the full width of the fabric, so the look of each shirt and the placement of the pattern vary. Every piece is unique.",
+      "Vihkiruusu was born at a time when flowers had little place in Marimekko's world of patterns. Maija Isola was drawn to floral motifs anyway, and set out to design a whole series of bold new floral prints. Alongside Vihkiruusu, the series also included Unikko."
+    ],
+    "pattern": {
+      "name": "Vihkiruusu",
+      "designer": "Maija Isola"
+    },
+    "sizes": [
+      {
+        "label": "34",
+        "sku": "097382-190-34",
+        "inStock": false
+      },
+      {
+        "label": "36",
+        "sku": "097382-190-36",
+        "inStock": false
+      },
+      {
+        "label": "38",
+        "sku": "097382-190-38",
+        "inStock": false
+      },
+      {
+        "label": "40",
+        "sku": "097382-190-40",
+        "inStock": false
+      },
+      {
+        "label": "42",
+        "sku": "097382-190-42",
+        "inStock": false
+      }
+    ],
+    "images": [
+      {
+        "url": "/images/griste-vihkiruusu.avif",
+        "alt": "Griste Vihkiruusu shirt in black, light pink and off-white, front view",
+        "width": 1920,
+        "height": 2400
+      }
+    ],
+    "details": {
+      "material": "Organic cotton",
+      "fit": "Straight cut, relaxed fit"
+    }
+  },
+  {
+    "id": "097382-159",
+    "name": "Griste Vihkiruusu",
+    "category": "Shirt",
+    "badges": [
+      "Outlet"
+    ],
+    "colorName": "black, light blue, off-white",
+    "colorways": [
+      {
+        "productId": "097382-190",
+        "colorName": "black, light pink, off-white",
+        "swatch": [
+          "#1a1a1a",
+          "#efc4c9",
+          "#f4f1ea"
+        ]
+      },
+      {
+        "productId": "097382-159",
+        "colorName": "black, light blue, off-white",
+        "swatch": [
+          "#1a1a1a",
+          "#a8cfe6",
+          "#f4f1ea"
+        ]
+      }
+    ],
+    "price": {
+      "amount": 14900,
+      "currency": "EUR"
+    },
+    "description": [
+      "The Griste Vihkiruusu cotton shirt is made of organic cotton and features the Vihkiruusu pattern. The straight-cut shirt has a relaxed fit and curved slits at the side seams.",
+      "We cut the shirts from the full width of the fabric, so the look of each shirt and the placement of the pattern vary. Every piece is unique.",
+      "Vihkiruusu was born at a time when flowers had little place in Marimekko's world of patterns. Maija Isola was drawn to floral motifs anyway, and set out to design a whole series of bold new floral prints. Alongside Vihkiruusu, the series also included Unikko."
+    ],
+    "pattern": {
+      "name": "Vihkiruusu",
+      "designer": "Maija Isola"
+    },
+    "sizes": [
+      {
+        "label": "34",
+        "sku": "097382-159-34",
+        "inStock": false
+      },
+      {
+        "label": "36",
+        "sku": "097382-159-36",
+        "inStock": true
+      },
+      {
+        "label": "38",
+        "sku": "097382-159-38",
+        "inStock": true
+      },
+      {
+        "label": "40",
+        "sku": "097382-159-40",
+        "inStock": false
+      },
+      {
+        "label": "42",
+        "sku": "097382-159-42",
+        "inStock": false
+      }
+    ],
+    "images": [
+      {
+        "url": "/images/griste-vihkiruusu-light-blue.avif",
+        "alt": "Griste Vihkiruusu shirt in black, light blue and off-white, front view",
+        "width": 1920,
+        "height": 2400
+      }
+    ],
+    "details": {
+      "material": "Organic cotton",
+      "fit": "Straight cut, relaxed fit"
+    }
+  }
+]

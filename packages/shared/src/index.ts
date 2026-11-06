@@ -21,12 +21,20 @@ export interface Size {
   inStock: boolean;
 }
 
+/** One colour of a style. Each colourway is its own product with its own id, images and stock. */
+export interface Colorway {
+  productId: string;
+  colorName: string;
+  swatch: readonly string[];
+}
+
 export interface Product {
   id: string;
   name: string;
   category: string;
   badges: readonly string[];
   colorName: string;
+  colorways?: readonly Colorway[];
   price: Money;
   /** original price, used only when product is on sale / campaign is active. */
   compareAtPrice?: Money;
