@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { App } from './App';
 import { createQueryClient } from './api/queryClient';
 import { productIdFromLocation } from './routing';
+import './index.css';
 
 const root = document.getElementById('root');
 if (!root) throw new Error('Root element #root not found');

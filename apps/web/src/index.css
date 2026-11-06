@@ -1,0 +1,79 @@
+/* Latin subset only: covers English and Finnish, keeps the font download small. */
+@import "@fontsource/ibm-plex-mono/latin-400.css";
+@import "@fontsource/ibm-plex-mono/latin-500.css";
+@import "@fontsource/ibm-plex-sans/latin-400.css";
+@import "tailwindcss";
+
+@theme {
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+
+  --text-xs: 0.6875rem;
+  --text-sm: 0.8125rem;
+  --text-body: 0.9375rem;
+  --tracking-caps: 0.06em;
+  --container-content: 600px;
+
+  --color-fg: #000;
+  --color-muted: #595959;
+  --color-bg: #fff;
+  --color-surface: #f2f2f2;
+  --color-line: #000;
+  --color-divider: #d9d9d9;
+  --color-error: #b00020;
+  --color-backdrop: rgb(0 0 0 / 0.4);
+
+  --animate-slide-up: slide-up 0.2s ease-out;
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      translate: 0 1rem;
+    }
+  }
+}
+
+@layer base {
+  :root {
+    color-scheme: light dark;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-fg: #e3e3e3;
+      --color-muted: #a8a8a8;
+      --color-bg: #1f1f1f;
+      --color-surface: #2b2b2b;
+      --color-line: #e3e3e3;
+      --color-divider: #3d3d3d;
+      --color-error: #ff8a80;
+      --color-backdrop: rgb(0 0 0 / 0.6);
+    }
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-fg);
+    outline-offset: 2px;
+  }
+
+  /* Stops the page behind an open modal sheet from scrolling. */
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+}
+
+/* Small uppercase label style used across the page. */
+@utility caps {
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+}
