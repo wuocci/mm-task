@@ -10,7 +10,8 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "concurrently --kill-others --names api,web --prefix-colors blue,magenta \"npm:dev:api\" \"npm:dev:web\"",
+    "dev": "concurrently --kill-others --names storage,api,web --prefix-colors gray,blue,magenta \"npm:dev:storage\" \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:storage": "azurite --silent --location .azurite",
     "dev:web": "npm run dev -w @mm/web",
     "dev:api": "npm run start -w @mm/api",
     "build": "npm run build --workspaces --if-present",

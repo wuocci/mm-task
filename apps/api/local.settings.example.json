@@ -2,10 +2,9 @@
   "IsEncrypted": false,
   "Values": {
     "FUNCTIONS_WORKER_RUNTIME": "node",
-    "AzureWebJobsStorage": "",
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "SUBSCRIPTIONS_STORAGE": "UseDevelopmentStorage=true",
+    "SUBSCRIPTIONS_TABLE": "subscriptions",
     "API_KEY": "replace-with-a-long-random-string"
-  },
-  "Host": {
-    "CORS": "http://localhost:5173"
   }
 }

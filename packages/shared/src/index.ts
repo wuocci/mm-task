@@ -48,7 +48,24 @@ export interface Product {
   };
 }
 
-export type ApiErrorCode = 'BAD_REQUEST' | 'UNAUTHORIZED' | 'NOT_FOUND' | 'INTERNAL';
+/** Body of `POST /api/products/{sku}/subscriptions`. `size` is a size label, e.g. "38". */
+export interface SubscriptionRequest {
+  email: string;
+  size: string;
+}
+
+/** 201 with `subscribed` for a new subscription, 200 with `already-subscribed` for a repeat. */
+export interface SubscriptionResponse {
+  status: 'subscribed' | 'already-subscribed';
+}
+
+export type ApiErrorCode =
+  | 'BAD_REQUEST'
+  | 'INVALID_EMAIL'
+  | 'INVALID_SIZE'
+  | 'UNAUTHORIZED'
+  | 'NOT_FOUND'
+  | 'INTERNAL';
 
 export interface ApiErrorBody {
   error: {
