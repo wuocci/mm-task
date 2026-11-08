@@ -70,6 +70,15 @@ Open <http://localhost:5173>. The product is sold out in every size. The light b
 - **Caching.** Products are cached for 60 seconds. Fine for name and price, but stock changes faster.
 - **Privacy.** Emails are never written to logs.
 
+## What I skipped
+
+- Sending emails, confirming the address and unsubscribing
+- Frontend tests
+- Deployment and Infrastructure as Code (I picked unit tests as the optional extra)
+- Rate limiting on subscribing
+- CI pipelines and workflows
+- Skills / agentic development setup
+
 ## What I'd do next
 
 - Send the notifications: the inventory system publishes stock changes (for example to Azure Service Bus), and a function picks up sizes coming back in stock and queues an email for everyone in that size's partition.
