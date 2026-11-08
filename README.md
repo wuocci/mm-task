@@ -40,12 +40,12 @@ brew tap azure/functions
 brew install azure-functions-core-tools@4
 ```
 
-Azurite comes with `npm install`.
+Azurite is installed with the project dependencies.
 
 ### Install and run
 
 ```sh
-npm install
+npm ci
 cp apps/api/local.settings.example.json apps/api/local.settings.json
 cp apps/web/.env.example apps/web/.env.local
 ```
